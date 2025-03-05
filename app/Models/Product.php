@@ -20,4 +20,10 @@ class Product extends Model
         return $this->belongsTo(ProductColor::class);
     }
 
+    public function types()
+    {
+        return $this->morphToMany(ProductType::class, 'type_assignments', 'type_assignments', 'type_assignments_id', 'type_id')
+            ->withPivot(['my_bonus_field']);
+    }
+
 }
