@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('suburb');
             $table->string('postcode');
             $table->string('state');
-            $table->string('directory_id')->nullable()->after('state');
+            $table->string('directory_id')->nullable();
             $table->timestamps();
         });
     }
