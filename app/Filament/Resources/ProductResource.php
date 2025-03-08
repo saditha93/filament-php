@@ -16,12 +16,11 @@ use Filament\Tables;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Actions\Action;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
 class ProductResource extends Resource
 {
@@ -54,13 +53,18 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('productCategory.name')->label('Category')->sortable(),
-                Tables\Columns\TextColumn::make('productColor.name')->label('Color')->sortable(),
-                Tables\Columns\TextColumn::make('description')->limit(50),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
-                ViewColumn::make('status_bar')
-                    ->view('filament.components.status-bar'),
+                TextColumn::make('name')->sortable()->searchable(),
+                TextColumn::make('productCategory.name')->label('Category')->sortable(),
+                TextColumn::make('productColor.name')->label('Color')->sortable(),
+                TextColumn::make('description')->limit(50),
+                TextColumn::make('created_at')->dateTime(),
+
+                TextColumn::make('statusBar')
+                    ->label('Status')
+                    ->formatStateUsing(fn(Product $record) => new HtmlString("<div style='background-color: {$record->productColor?->hex_code}; padding: 8px; color: white; text-align: center; border-radius: 4px;'>
+                Hello
+            </div>"))
+                    ->html(),
             ])
             ->filters([
                 //
