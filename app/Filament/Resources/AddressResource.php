@@ -70,7 +70,7 @@ class AddressResource extends Resource
         );
 
         if (!empty($result)) {
-            $set('suburb', $result[0]['Address'] ?? ''); // Autofill suburb
+            $set('suburb', $result[0]['Address'] ?? '');
             $set('directory_id', $result[0]['DirectoryIdentifier'] ?? '');
         } else {
             $set('suburb', '');
