@@ -14,7 +14,7 @@ class ProductTypeWidget extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make("Product Color", ProductType::count())
+            Stat::make("Product Type", ProductType::count())
                 ->description("Product Type Count")
                 ->descriptionIcon('heroicon-o-adjustments-vertical',IconPosition::Before)
                 ->url(ProductTypeResource::getUrl())
