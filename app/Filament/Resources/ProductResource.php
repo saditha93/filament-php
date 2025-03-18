@@ -56,7 +56,7 @@ class ProductResource extends Resource
             ->columns([
                 TextColumn::make('name')->sortable()->searchable(),
                 TextColumn::make('productCategory.name')->label('Category')->sortable(),
-                TextColumn::make('productColor.hex_code')->label('Color')->sortable(),
+                TextColumn::make('productColor.name')->label('Color')->sortable(),
                 TextColumn::make('description')->limit(50),
                 TextColumn::make('created_at')->dateTime(),
                 ViewColumn::make('status_bar')
