@@ -17,6 +17,7 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Actions\Action;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -55,16 +56,11 @@ class ProductResource extends Resource
             ->columns([
                 TextColumn::make('name')->sortable()->searchable(),
                 TextColumn::make('productCategory.name')->label('Category')->sortable(),
-                TextColumn::make('productColor.name')->label('Color')->sortable(),
+                TextColumn::make('productColor.hex_code')->label('Color')->sortable(),
                 TextColumn::make('description')->limit(50),
                 TextColumn::make('created_at')->dateTime(),
-
-                TextColumn::make('statusBar')
-                    ->label('Status')
-                    ->formatStateUsing(fn(Product $record) => new HtmlString("<div style='background-color: {$record->productColor?->hex_code}; padding: 8px; color: white; text-align: center; border-radius: 4px;'>
-                Hello
-            </div>"))
-                    ->html(),
+                ViewColumn::make('status_bar')
+                    ->view('filament.components.status_bar'),
             ])
             ->filters([
                 //
