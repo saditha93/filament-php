@@ -31,14 +31,14 @@ class AddressService
         return $this->bearerToken;
     }
 
-    public function findAddress($streetName, $suburb, $postcode, $state, $streetType = null, $streetNumber = null)
+    public function findAddress($companyId,$streetName, $suburb, $postcode, $state, $streetType = null, $streetNumber = null)
     {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->getBearerToken(),
             'Content-Type' => 'application/json',
             'Accept' => 'application/json'
         ])->post($this->baseUrl . 'orders/findaddress', [
-            'company_id' => 17,
+            'company_id' => $companyId,
             'street_number' => $streetNumber,
             'street_name' => $streetName,
             'street_type' => $streetType,

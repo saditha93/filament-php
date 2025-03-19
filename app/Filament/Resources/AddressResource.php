@@ -31,13 +31,21 @@ class AddressResource extends Resource
                         Action::make('fetch_address')
                             ->label('Fetch')
                             ->icon('heroicon-o-magnifying-glass')
-                            ->action(fn($state, $set) => self::fetchAddress($state, $set))
+                            ->action(fn($get, $set) => self::fetchAddress($get, $set))
                             ->color('primary')
                     ),
 
                 TextInput::make('suburb')
                     ->label('Suburb')
                     ->required(),
+
+                TextInput::make('street_number')
+                    ->label('Street Number')
+                    ->dehydrated(false),
+
+                TextInput::make('street_type')
+                    ->label('Street Type')
+                    ->dehydrated(false),
 
                 TextInput::make('postcode')
                     ->label('Postcode')
@@ -46,6 +54,10 @@ class AddressResource extends Resource
                 TextInput::make('state')
                     ->label('State')
                     ->required(),
+
+                TextInput::make('company_id')
+                    ->label('Company Id')
+                    ->dehydrated(false),
 
                 TextInput::make('directory_id')
                     ->label('Directory ID')
@@ -59,15 +71,22 @@ class AddressResource extends Resource
             ]);
     }
 
-    public static function fetchAddress($state, callable $set)
+    public static function fetchAddress(callable $get, callable $set)
     {
+        $streetName = $get('street_name');
+        $postcode = $get('postcode');
+        $state = $get('state');
+        $suburb = $get('suburb');
+        $streetType = $get('street_type');
+        $streetNumber = $get('street_number');
+        $companyId = $get('company_id');
+
+        if (empty($streetName)) {
+            return;
+        }
+
         $service = new AddressService();
-        $result = $service->findAddress(
-            $state,
-            null,
-            '3000',
-            'VIC'
-        );
+        $result = $service->findAddress($companyId, $streetName, $suburb, $postcode, $state, $streetType, $streetNumber);
 
         if (!empty($result)) {
             $set('suburb', $result[0]['Address'] ?? '');
@@ -77,6 +96,7 @@ class AddressResource extends Resource
             $set('directory_id', '');
         }
     }
+
 
     public static function qualifyService($state, callable $set)
     {
